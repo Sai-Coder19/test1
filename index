@@ -1,66 +1,72 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
 </head>
 <body>
 <script>
 let grades = [];
 let response;
 
-console.log("Hello Welcome to the GPA Calculator")
-alert("Hello Welcome to the GPA Calculator")
-console.log("Would You Like to Calculate Your GPA?");
-response = prompt("Would You Like to Calculate Your GPA Please respond with yes or no ");
-console.log("User entered:" + response);
+console.log("Hello! Welcome to the GPA Calculator.");
+alert("Hello! Welcome to the GPA Calculator.");
 
-if (response == "yes"){
-	calculateGPA (grades);
-}
-else 
-	if (response =="no"){
-	console.log("Have A Good Day");
-}
+response = prompt("Would you like to calculate your GPA? Please respond with 'yes' or 'no'.").toLowerCase();
+console.log("User entered: " + response);
 
- else{
-console.log("Sorry " + response +" is not accepted");
+if (response === "yes") {
+    calculateGPA(grades);
+} else if (response === "no") {
+    console.log("Have a good day!");
+    alert("Have a good day!");
+} else {
+    console.log("Sorry, '" + response + "' is not a valid response.");
+    alert("Sorry, '" + response + "' is not a valid response.");
 }
 
 function calculateGPA(array) {
     let numOfGrades = parseInt(prompt("Enter the number of subjects:"));
-
-    for (let i = 1; i <= numOfGrades; i++) {
-        let grade = Math.round((prompt("Enter the grade for each subject")));
-		
-		if(grade>=90){
-		grade = 4.0;
-		}
-		else if(grade>=80){
-		grade = 3.0;
-		}
-		else if(grade>=70){
-		grade = 2.0;
-		}
-		else if(grade>=60) {
-		grade = 1.0;
-		}
-		else{
-		grade = 0.0;
-		}
-        array.push(grade);
+    
+    if (isNaN(numOfGrades) || numOfGrades <= 0) {
+        console.log("Invalid number of subjects. Please restart.");
+        alert("Invalid number of subjects. Please restart.");
+        return;
     }
 
-   let total=0;
-		for (let element of array){
-		 total = total + element;
-		}
+    for (let i = 1; i <= numOfGrades; i++) {
+        let grade = parseFloat(prompt(`Enter numerical grade for subject ${i} (0-100):`));
+
+        if (isNaN(grade) || grade < 0 || grade > 100) {
+            console.log(`Invalid input for subject ${i}. Please enter a number between 0 and 100.`);
+            alert(`Invalid input for subject ${i}. Please enter a number between 0 and 100.`);
+            i--; // Decrement to re-enter the grade
+            continue;
+        }
+
+        // Convert numerical grade to GPA scale
+        let gpaEquivalent = (grade >= 90) ? 4.0 :
+                            (grade >= 80) ? 3.0 :
+                            (grade >= 70) ? 2.0 :
+                            (grade >= 60) ? 1.0 : 0.0;
+        
+        array.push(gpaEquivalent);
+    }
+
+    if (array.length === 0) {
+        console.log("No valid grades entered.");
+        alert("No valid grades entered.");
+        return;
+    }
+
+    let total = array.reduce((sum, grade) => sum + grade, 0);
     let gpa = total / array.length;
 
-    console.log("Your GPA is: " + gpa);
-	alert("Your GPA is: " + gpa);
+    console.log("Your GPA is: " + gpa.toFixed(2));
+    alert("Your GPA is: " + gpa.toFixed(2));
 }
-
-
-
 </script>
-
 </body>
 </html>
+
